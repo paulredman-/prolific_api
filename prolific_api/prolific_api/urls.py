@@ -24,7 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 ]
 
-router = DefaultRouter()
+router = DefaultRouter(trailing_slash=False)
 router.register(r'surveys', SurveyViewSet, basename='survey')
 router.register(r'survey-responses', SurveyResponseViewSet, basename='survey_response')
 
