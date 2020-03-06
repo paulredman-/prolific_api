@@ -1,0 +1,5 @@
+Django<3
+# psycopg2-binary
+djangorestframework
+
+

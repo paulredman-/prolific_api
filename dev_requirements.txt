@@ -1,0 +1,9 @@
+-r requirements.txt
+
+model_bakery
+
+pytest
+pytest-cov
+pytest-django
+
+pylint
