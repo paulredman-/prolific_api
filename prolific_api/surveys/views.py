@@ -36,11 +36,18 @@ class SurveyResponseViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = SurveyResponse.objects
 
+        survey_id = self.request.query_params.get('survey_id', None)
+        if survey_id is not None:
+            try:
+                queryset = queryset.filter(survey_id=survey_id)
+            except ValueError:
+                raise Http404('survey_id is not a valid integer')
+
         user_id = self.request.query_params.get('user_id', None)
         if user_id is not None:
             try:
                 queryset = queryset.filter(user_id=user_id)
             except ValueError:
-                raise Http404('Not a valid integer')
+                raise Http404('user_id is not a valid integer')
 
         return queryset.all()

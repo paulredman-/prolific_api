@@ -73,6 +73,40 @@ class SurveyResponseTestClass(TestCase):
         assert res.json() == []
 
 
+    def test_get_list_with_survey_id(self):
+        instances = baker.make('SurveyResponse', _quantity=2)
+
+        url = '{}?survey_id={}'.format(reverse('survey_response-list'), instances[0].survey_id)
+
+        res = self.client.get(url)
+        assert res.status_code == 200
+
+        data = res.json()
+        assert len(data) == 1
+
+
+    @override_settings(DEBUG=True)
+    def test_get_list_with_invalid_survey_id(self):
+        baker.make('SurveyResponse', _quantity=2)
+
+        url = '{}?survey_id={}'.format(reverse('survey_response-list'), 'prr')
+
+        res = self.client.get(url)
+        assert res.status_code == 404
+        assert res.json() == {"detail":"Not found."}
+
+
+    def test_get_list_with_non_existent_survey_id(self):
+        instances = baker.make('SurveyResponse', _quantity=2)
+
+        url = '{}?survey_id={}'.format(reverse('survey_response-list'), instances[1].survey_id + 1)
+
+        res = self.client.get(url)
+        assert res.status_code == 200
+
+        assert res.json() == []
+
+
     def get_good_input_data(self):
         self.survey = baker.make('Survey', available_places=random.randint(20, 40))
         self.user = baker.make(get_user_model())
